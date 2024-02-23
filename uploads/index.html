@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+  '/verify'
+  '/verify/check'
+    sojida101007
+    <pre>
+    create table users(
+ "id" serial primary key,
+ "phone" text not null,
+ "position" text not null,
+ "inn" text not null,
+ "litso" text,
+ "image" text,
+ "type" text,
+ "nomer_registratsiya" integer,
+ "lastname" text,
+ "firstname" text,
+ "name" text,
+ "super_admin" boolean default false not null,
+ "time_create" timestamp default current_timestamp not null,
+  "time_update" timestamp default current_timestamp not null
+);
+create table contacts(
+ "id" serial primary key,
+ "phone" text not null,
+ "companiy" text not null,
+ "full_name" text not null,
+ "comanda" text not null,
+  "time_create" timestamp default current_timestamp not null,
+  "time_update" timestamp default current_timestamp not null
+);
+create table companies(
+ "id" serial primary key,
+"image" text not null,
+"phone" text not null,
+"instagram" text not null,
+"facebook" text not null,
+"twitter" text not null,
+"youtobe" text not null,
+"email" text not null,
+ "time_create" timestamp default current_timestamp not null,
+  "time_update" timestamp default current_timestamp not null
+);
+create table blog_categories(
+ "id" serial primary key,
+"title" text not null,
+ "time_create" timestamp default current_timestamp not null,
+  "time_update" timestamp default current_timestamp not null
+);
+create table blogs(
+ "id" serial primary key,
+ "title" text not null,
+ "time" timestamp default current_timestamp not null,
+ "time_create" timestamp default current_timestamp not null,
+ "time_update" timestamp default current_timestamp not null
+);
+create table blog_category_connect(
+ "id" serial primary key,
+ "blog_id" integer not null,
+ "category_id" integer not null,
+ "time_create" timestamp default current_timestamp not null,
+ "time_update" timestamp default current_timestamp not null
+);
+create table blog_category(
+ "id" serial primary key,
+
+ "time_create" timestamp default current_timestamp not null,
+  "time_update" timestamp default current_timestamp not null
+);
+
+
+
+create table document(
+ "id" serial primary key,
+ "user_id" integer not null,
+ "file" text not null,
+ "time_create" timestamp default current_timestamp not null,
+  "time_update" timestamp default current_timestamp not null
+);
+
+create table  hamkasb(
+  "id" serial primary key,
+  "user_id" integer not null,
+   UNIQUE(hamkasb_id),
+ "hamkasb_id" text not null,
+ "time_create" timestamp default current_timestamp not null,
+  "time_update" timestamp default current_timestamp not null
+);
+create table akti(
+   "id" serial primary key,
+  "user_id" integer not null,
+  "status" text not null,
+  "tip" text not null,
+  "sum" text not null,
+  "time_create" timestamp default current_timestamp not null,
+  "time_update" timestamp default current_timestamp not null
+);
+
+
+create table vigruzka(
+   "id" serial primary key,
+  "user_id" integer not null,
+ "perexot" text not null,
+ "tip" text not null,
+ "teg" text not null,
+ "status" integer not null,
+ "file" integer not null,
+  "time_create" timestamp default current_timestamp not null,
+  "time_update" timestamp default current_timestamp not null
+);
+create table balanse(
+   "id" serial primary key,
+  "user_id" integer not null,
+  "tip" text not null,
+  "status" integer not null,
+  "time_create" timestamp default current_timestamp not null,
+  "time_update" timestamp default current_timestamp not null
+);
+create table ispolze(
+   "id" serial primary key,
+   "isporitel_category" integer not null,
+  "user_id" integer not null,
+  "tip" text not null,
+  "status" integer not null,
+  "nalogstatus" integer not null,
+  "grajdanstvo" text not null,
+  "med_knishka" text not null,
+  "sprafka" text not null,
+  "proyekt" text not null,
+  "potpisdata" text not null,
+  "time_create" timestamp default current_timestamp not null,
+  "time_update" timestamp default current_timestamp not null
+)
+</pre>
+</body>
+</html>
