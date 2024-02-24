@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const { Pool } = require('pg');
+const pool = require('../db');
 const { upload_file } = require('../middleware/file_upload');
 
 
@@ -10,12 +10,15 @@ const { upload_file } = require('../middleware/file_upload');
 router.post('/zakaz', async (req, res) => {
   try {
 
-    const { title, type, address, description, creator } = req.body;
+    const { title, type, address, deckription, date, datebefore, company, price, creator } = req.body;
+    console.log('====================================');
+    console.log(req.body);
+    console.log('====================================');
     var file=upload_file(req)
-    const query = `INSERT INTO zakaz (title, type, address, description, file, creator)
-                   VALUES ($1, $2, $3, $4, $5, $6)
+    const query = `INSERT INTO zakaz (title, type, address, deckription, file, date, datebefore, company, price, creator)
+                   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
                    RETURNING *`;
-    const values = [title, type, address, description, file, creator];
+    const values = [title, type, address, deckription, file, date, datebefore, company, price, creator];
     const result = await pool.query(query, values);
     res.json(result.rows[0]);
   } catch (error) {

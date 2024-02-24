@@ -15,6 +15,7 @@ router.post("/users", validateJWT, async (req, res) => {
       litso,
       image,
       type,
+      email,
       nomer_registratsiya,
       lastname,
       firstname,
@@ -22,8 +23,8 @@ router.post("/users", validateJWT, async (req, res) => {
       super_admin,
     } = req.body;
 
-    const query = `INSERT INTO users (phone, position, inn, litso, image, type, nomer_registratsiya, lastname, firstname, name, super_admin) 
-                   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) 
+    const query = `INSERT INTO users (phone, position, inn, litso, image, type, nomer_registratsiya, lastname, firstname, name, email, super_admin) 
+                   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) 
                    RETURNING *`;
 
     const values = [
@@ -33,6 +34,7 @@ router.post("/users", validateJWT, async (req, res) => {
       litso,
       image,
       type,
+      email,
       nomer_registratsiya,
       lastname,
       firstname,
@@ -77,11 +79,12 @@ router.put("/users/:id", validateJWT, async (req, res) => {
       lastname,
       firstname,
       name,
+      email,
       super_admin,
     } = req.body;
 
     const query = `UPDATE users SET phone = $1, position = $2, inn = $3, litso = $4, image = $5, type = $6, 
-                   nomer_registratsiya = $7, lastname = $8, firstname = $9, name = $10, super_admin = $11, 
+                   nomer_registratsiya = $7, lastname = $8, firstname = $9, name = $10, email = $11, super_admin = $12, 
                    time_update = current_timestamp WHERE id = $12 RETURNING *`;
 
     const values = [
@@ -95,6 +98,7 @@ router.put("/users/:id", validateJWT, async (req, res) => {
       lastname,
       firstname,
       name,
+      email,
       super_admin,
       id,
     ];
