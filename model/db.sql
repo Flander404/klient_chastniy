@@ -55,8 +55,8 @@ create table companiy(
 );
 create table blog_category(
  "id" serial primary key,
-"title" text not null,
- "time_create" timestamp default current_timestamp not null,
+  "title" text not null,
+  "time_create" timestamp default current_timestamp not null,
   "time_update" timestamp default current_timestamp not null
 );
 create table blogs(
@@ -148,3 +148,17 @@ create table ispolze(
   "time_create" timestamp default current_timestamp not null,
   "time_update" timestamp default current_timestamp not null
 )
+
+
+create table zakaz(
+   "id" serial primary key,
+  "title" text not null,
+   "type" text not null,
+   "address" text not null,
+   "deckription" text not null,
+   "file" text,
+   "creator" integer not null,
+  "time_create" timestamp default current_timestamp not null,
+  "time_update" timestamp default current_timestamp not null
+);
+

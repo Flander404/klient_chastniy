@@ -6,6 +6,8 @@ const bodyParser = require("body-parser");
 
 var usersRouter = require("./routes/usersRouter.js");
 var lisoRouter = require("./routes/lisoRouter.js");
+var zakazRouter = require("./routes/zakazRouter.js");
+
 
 var contactsRouter = require("./routes/contactsRouter.js");
 var companiesRouter = require("./routes/companiesRouter.js");
@@ -31,6 +33,7 @@ app.use(express.static("./uploads"));
 app.use(cors({ origin: "*" }));
 app.use(bodyParser.urlencoded({ extended: true })); // URL-encoded verileri için
 
+app.use("/api", zakazRouter);
 app.use("/api", usersRouter);
 app.use("/api", lisoRouter);
 app.use("/api", contactsRouter);
