@@ -168,3 +168,19 @@ create table zakaz(
   "time_update" timestamp default current_timestamp not null
 );
 
+create table like_user(
+  "id" serial primary key,
+  "me_id" integer not null,
+  "user_id" integer not null,
+  "time_create" timestamp default current_timestamp not null,
+  "time_update" timestamp default current_timestamp not null
+);
+
+
+create table ban(
+  "id" serial primary key,
+  "me_id" integer not null,
+  "user_id" integer not null,
+  "time_create" timestamp default current_timestamp not null,
+  "time_update" timestamp default current_timestamp not null
+);
