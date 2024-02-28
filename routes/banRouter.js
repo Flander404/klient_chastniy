@@ -38,7 +38,7 @@ router.get('/ban/:me_id', async (req, res) => {
 
       const ban = await pool.query('SELECT * FROM ban WHERE me_id = $1', [me_id]);
       if (ban.rows.length === 0) {
-        return res.status(404).json('ban topilmadi');
+        return res.status(200).json([]);
       }
   for (let i = 0; i < ban.rows.length; i++) {
   for (let j = 0; j < users.rows.length; j++) {

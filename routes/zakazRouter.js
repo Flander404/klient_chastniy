@@ -39,6 +39,41 @@ router.get('/zakaz', async (req, res) => {
   }
 });
 
+router.get("/zakaz/:id", (req, res) => {
+  var id = req.params.id;
+  // Ma'lumotlarni bazadan olish
+  const query = `SELECT * FROM zakaz  WHERE creator = $1`;
+
+  pool
+    .query(query, [id])
+    .then((result) => {
+      res.status(200).json(result.rows);
+    })
+    .catch((error) => {
+      console.error("Error fetching zakaz:", error);
+      res
+        .status(500)
+        .json({ error: "An error occurred while fetching zakaz." });
+    });
+});
+router.get("/zakaz_id/:id", (req, res) => {
+  var id = req.params.id;
+  // Ma'lumotlarni bazadan olish
+  const query = `SELECT * FROM zakaz  WHERE id = $1`;
+
+  pool
+    .query(query, [id])
+    .then((result) => {
+      res.status(200).json(result.rows);
+    })
+    .catch((error) => {
+      console.error("Error fetching zakaz:", error);
+      res
+        .status(500)
+        .json({ error: "An error occurred while fetching zakaz." });
+    });
+});
+
 // UPDATE - Kaydı güncelleme
 router.put('/zakaz/:id', async (req, res) => {
   try {
