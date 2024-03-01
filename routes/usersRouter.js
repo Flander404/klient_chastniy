@@ -51,34 +51,36 @@ router.post("/users", validateJWT, async (req, res) => {
       .json({ error: "An error occurred while creating the user." });
   }
 });
-router.get('/search/:me_id', async (req, res) => {
+router.get("/search/:me_id", async (req, res) => {
   try {
     const { me_id } = req.params;
-    const users = await pool.query('SELECT * FROM users');
-    const ban = await pool.query('SELECT * FROM ban WHERE user_id = $1', [me_id]);
+    const users = await pool.query("SELECT * FROM users");
+    const ban = await pool.query("SELECT * FROM ban WHERE user_id = $1", [
+      me_id,
+    ]);
 
-    var send_data=[]
-for (let i = 0; i < users.rows.length; i++) {
-  users.rows[i].push=true
- for (let j = 0; j < ban.rows.length; j++) {
-  if(users.rows[i].id==ban.rows[j].me_id){
-    users.rows[i].push=true
-  }}
-  if(users.rows[i].push){
-    send_data.push(users.rows[i])
-  }
-}
-
+    var send_data = [];
+    for (let i = 0; i < users.rows.length; i++) {
+      users.rows[i].push = true;
+      for (let j = 0; j < ban.rows.length; j++) {
+        if (users.rows[i].id == ban.rows[j].me_id) {
+          users.rows[i].push = true;
+        }
+      }
+      if (users.rows[i].push) {
+        send_data.push(users.rows[i]);
+      }
+    }
 
     res.json(send_data);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server xatosi');
+    res.status(500).send("Server xatosi");
   }
 });
 
 // Tüm kullanıcıları getirme
-router.get("/users", validateJWT, async (req, res) => {
+router.get("/users", async (req, res) => {
   try {
     const query = "SELECT * FROM users";
     const result = await pool.query(query);

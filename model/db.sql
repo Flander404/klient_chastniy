@@ -160,7 +160,7 @@ create table zakaz(
    "file" text,
    "date" text, 
    "datebefore" text,
-   "status" text default 'Опубликовано' not null,
+   "status" text default 'В ожидании исполнителя' not null,
    "company" text,
    "price" text, 
    "creator" integer not null,

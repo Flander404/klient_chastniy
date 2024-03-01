@@ -58,7 +58,7 @@ router.get("/like_user/:me_id", async (req, res) => {
       }
     }
 
-    res.json(like_user.rows[0]);
+    res.json(like_user.rows);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server xatosi");
