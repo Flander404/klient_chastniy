@@ -181,7 +181,28 @@ router.post("/verify", async (req, res) => {
         "INSERT INTO verify (phone, code) VALUES ($1, $2) RETURNING id";
       const values = [phone, code];
       const result = await pool.query(query, values);
-      res.status(201).json({ id: result.rows[0].id, code });
+      const headers = {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTA0ODY1OTcsImlhdCI6MTcwNzg5NDU5Nywicm9sZSI6InRlc3QiLCJzaWduIjoiMDRkZmYzNDA2NzJjNjdiZDBlZDI3MmU2N2I3ZTRlY2M2OTJmMzMwMjMyZmNlZTkyMDc1ODg3ZDA4NDZiODUyNSIsInN1YiI6IjY0MzcifQ.g1W-DPl2KnK4JAKkkblR9eXeYwu5vLcQtp1ajQkNShQ", // Замените на свой реальный токен доступа
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      };
+      const msgApi = "https://notify.eskiz.uz/api/message/sms/send";
+      const sendMsg = {
+                  mobile_phone: phone,
+                  message: code,
+                  from: "4546",
+                };
+                axios
+                  .post(msgApi, sendMsg, { headers })
+                  .then((response) => {
+                    console.log(response);
+                    return res.json({ message: "Ваш код отправлен на ваш номер" });
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                    return res.json({ message: "Ошибка при отправке sms сообщения" });
+                  });
     } else {
       const query3 = `UPDATE verify SET code = $1,
   time_update = current_timestamp WHERE id = $2 RETURNING *`;
