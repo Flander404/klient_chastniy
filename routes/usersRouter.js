@@ -264,7 +264,7 @@ router.post('/send_message/sms',(req,res)=>{
                 return res.json({ message: "Ошибка при отправке sms сообщения" });
               });
 })
-router.post('/send_message/email',(req,res)=>{
+router.post('/send_message/email', async (req,res)=>{
   try {
     const query = 'SELECT * FROM users WHERE email = $1';
     const result = await pool.query(query, [email]);
