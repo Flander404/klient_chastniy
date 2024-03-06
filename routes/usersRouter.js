@@ -265,6 +265,7 @@ router.post('/send_message/sms',(req,res)=>{
               });
 })
 router.post('/send_message/email', async (req,res)=>{
+  var {email,message}=req.body
   try {
     const query = 'SELECT * FROM users WHERE email = $1';
     const result = await pool.query(query, [email]);
