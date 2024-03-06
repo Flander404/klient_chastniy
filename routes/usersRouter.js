@@ -187,7 +187,7 @@ router.post("/verify", async (req, res) => {
         "Content-Type": "application/json",
         Accept: "application/json",
       };
-      const msgApi = "https://notify.eskiz.uz/api/message/sms/send";
+      const msgApi = "https://notify.eskiz.uz/api/message/sms/send2";
       const sendMsg = {
                   mobile_phone: phone,
                   message: code,
@@ -216,7 +216,7 @@ router.post("/verify", async (req, res) => {
         "Content-Type": "application/json",
         Accept: "application/json",
       };
-      const msgApi = "https://notify.eskiz.uz/api/message/sms/send";
+      const msgApi = "https://notify.eskiz.uz/api/message/sms/send2";
       const sendMsg = {
                   mobile_phone: phone,
                   message: code,
