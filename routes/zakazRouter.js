@@ -11,9 +11,6 @@ router.post('/zakaz', async (req, res) => {
   try {
 
     const { title, type, address, deckription, date, datebefore, company, price, creator } = req.body;
-    console.log('====================================');
-    console.log(req.body);
-    console.log('====================================');
     var file=upload_file(req)
     const query = `INSERT INTO zakaz (title, type, address, deckription, file, date, datebefore, company, price, creator)
                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
@@ -56,6 +53,32 @@ router.get("/zakaz/:id", (req, res) => {
         .json({ error: "An error occurred while fetching zakaz." });
     });
 });
+
+
+router.get("/zakazone/:id", (req, res) => {
+  var id = req.params.id;
+  // Ma'lumotlarni bazadan olish
+  const query = `SELECT * FROM zakaz  WHERE id = $1`;
+
+  pool
+    .query(query, [id])
+    .then((result) => {
+      const query = `SELECT * FROM users  WHERE id = $1`;
+      pool
+        .query(query, [result.rows[0].creator]).then(res1=>{
+
+          res.status(200).json({da:result.rows,user:res1.rows});
+        })
+   
+    })
+    .catch((error) => {
+      console.error("Error fetching zakaz:", error);
+      res
+        .status(500)
+        .json({ error: "An error occurred while fetching zakaz." });
+    });
+});
+
 router.get("/zakaz_id/:id", (req, res) => {
   var id = req.params.id;
   // Ma'lumotlarni bazadan olish

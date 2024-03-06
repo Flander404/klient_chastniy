@@ -193,11 +193,13 @@ create table taklif(
   "time_create" timestamp default current_timestamp not null,
   "time_update" timestamp default current_timestamp not null
 );
-create table taklif(
+create table taklif_zakaz(
    "id" serial primary key,
   "title" text default "Новое объявление" not null,
   "message" text not null,
   "zakaz_id" integer not null,
+  "user_id" integer not null,
+  "my_id" integer not null,
   "time_create" timestamp default current_timestamp not null,
   "time_update" timestamp default current_timestamp not null
 );

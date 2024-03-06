@@ -21,6 +21,8 @@ var vigruzkaRouter = require("./routes/vigruzkaRouter.js");
 var balanseRouter = require("./routes/balanseRouter.js");
 var ispolzeRouter = require("./routes/ispolzeRouter.js");
 var schetaRouter = require("./routes/schetaRouter.js");
+var taklifZakazRouter = require("./routes/taklifZakazRouter.js");
+
 
 var blogCategoryConnectRouter = require("./routes/blogCategoryConectRouter.js");
 const cors = require("cors");
@@ -51,6 +53,8 @@ app.use("/api", ispolzeRouter);
 app.use("/api", schetaRouter);
 app.use('/api',banRouter)
 app.use('/api',likeUserRouter)
+app.use('/api',taklifZakazRouter)
+
 app.get("/doc", (_req, res) => {
   const data = fs.readFileSync("./uploads/index.html", {
     encoding: "utf8",

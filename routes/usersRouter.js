@@ -238,6 +238,75 @@ router.post("/verify", async (req, res) => {
     res.status(500).json({ error: "Bir hata oluştu" });
   }
 });
+
+router.post('/send_message/sms',(req,res)=>{
+  var { message, phone }=req.body
+  const headers = {
+    Authorization:
+      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTA0ODY1OTcsImlhdCI6MTcwNzg5NDU5Nywicm9sZSI6InRlc3QiLCJzaWduIjoiMDRkZmYzNDA2NzJjNjdiZDBlZDI3MmU2N2I3ZTRlY2M2OTJmMzMwMjMyZmNlZTkyMDc1ODg3ZDA4NDZiODUyNSIsInN1YiI6IjY0MzcifQ.g1W-DPl2KnK4JAKkkblR9eXeYwu5vLcQtp1ajQkNShQ", // Замените на свой реальный токен доступа
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  };
+  const msgApi = "https://notify.eskiz.uz/api/message/sms/send";
+  const sendMsg = {
+              mobile_phone: phone,
+              message: message,
+              from: "4546",
+            };
+            axios
+              .post(msgApi, sendMsg, { headers })
+              .then((response) => {
+                console.log(response);
+                return res.json({ message: "Ваш код отправлен на ваш номер" });
+              })
+              .catch((error) => {
+                console.log(error);
+                return res.json({ message: "Ошибка при отправке sms сообщения" });
+              });
+})
+router.post('/send_message/email',(req,res)=>{
+  try {
+    const query = 'SELECT * FROM users WHERE email = $1';
+    const result = await pool.query(query, [email]);
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Kullanıcı bulunamadı.' });
+    }
+
+    const user = result.rows[0];
+    // E-posta gönderme işlemini gerçekleştirin
+ const transporter = nodemailer.createTransport({
+      pool: true,
+     service: "gmail",
+     auth: {
+        user: "uzdub.group@gmail.com",
+        pass: 'fbcgnvqfbmocflcm',
+     },
+      tls: {
+        // do not fail on invalid certs
+        rejectUnauthorized: false
+    },
+    });
+    const mailOptions = {
+      from: 'uzdub.group@gmail.com',
+      to: email,
+      subject: 'Zakaz',
+      text: `message: ${message}`,
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        res.status(400).json(error)
+      } else {
+      res.status(200).json(info)
+      }
+    });
+  } catch (error) {
+    console.error('Veritabanı hatası:', error);
+    res.status(500).json({err:error.message});
+  }
+
+})
+
 router.post("/verify2", async (req, res) => {
   const { phone } = req.body;
 
