@@ -140,7 +140,33 @@ router.put("/users/:id", validateJWT, async (req, res) => {
       .json({ error: "An error occurred while updating the user." });
   }
 });
+// Kullanıcı güncelleme
+router.put("/users/send/:id", validateJWT, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      phone,
+      position,
+    } = req.body;
 
+    const query = `UPDATE users SET phone = $1, position = $2, 
+                   time_update = current_timestamp WHERE id = $3 RETURNING *`;
+
+    const values = [
+      phone,
+      position,
+      id
+    ];
+
+    const result = await pool.query(query, values);
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while updating the user." });
+  }
+});
 // Kullanıcı silme
 router.delete("/users/:id", validateJWT, async (req, res) => {
   try {
