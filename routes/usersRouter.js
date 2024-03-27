@@ -7,7 +7,7 @@ const { generateVerificationCode } = require("../middleware/file_upload");
 const { default: axios } = require("axios");
 
 // Kullanıcı oluşturma
-router.post("/users", validateJWT, async (req, res) => {
+router.post("/users", async (req, res) => {
   try {
     const {
       phone,
@@ -81,7 +81,7 @@ router.get("/search/:me_id", async (req, res) => {
 });
 
 // Tüm kullanıcıları getirme
-router.get("/users", validateJWT, async (req, res) => {
+router.get("/users", async (req, res) => {
   try {
     const query = "SELECT * FROM users";
     const result = await pool.query(query);
@@ -175,7 +175,7 @@ router.delete("/users/:id", validateJWT, async (req, res) => {
   }
 });
 
-router.get("/verify", validateJWT, async (req, res) => {
+router.get("/verify", async (req, res) => {
   try {
     const query = "SELECT * FROM verify";
     const result = await pool.query(query);
@@ -200,27 +200,37 @@ router.post("/verify", async (req, res) => {
         "INSERT INTO verify (phone, code) VALUES ($1, $2) RETURNING id";
       const values = [phone, code];
       const result = await pool.query(query, values);
-      const headers = {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTA0ODY1OTcsImlhdCI6MTcwNzg5NDU5Nywicm9sZSI6InRlc3QiLCJzaWduIjoiMDRkZmYzNDA2NzJjNjdiZDBlZDI3MmU2N2I3ZTRlY2M2OTJmMzMwMjMyZmNlZTkyMDc1ODg3ZDA4NDZiODUyNSIsInN1YiI6IjY0MzcifQ.g1W-DPl2KnK4JAKkkblR9eXeYwu5vLcQtp1ajQkNShQ", // Замените на свой реальный токен доступа
-        "Content-Type": "application/json",
-        Accept: "application/json",
+
+      const data = {
+        messages: [
+          {
+            destinations: [{ to: "998903338849" }],
+            from: "ServiceSMS",
+            text: "Hello,\n\nThis is a test message from Infobip. Have a nice day!",
+          },
+        ],
       };
-      const msgApi = "https://notify.eskiz.uz/api/message/sms/send2";
-      const sendMsg = {
-        mobile_phone: phone,
-        message: code,
-        from: "4546",
+
+      const config = {
+        headers: {
+          Authorization:
+            "App caa6824706f69f2f53d642916974e8c5-5a2e55ee-95ad-4335-89df-e21c74e09d55",
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
       };
+
       axios
-        .post(msgApi, sendMsg, { headers })
+        .post(
+          "https://43mzem.api.infobip.com/sms/2/text/advanced",
+          data,
+          config
+        )
         .then((response) => {
-          console.log(response);
-          return res.json({ message: "Ваш код отправлен на ваш номер" });
+          console.log("SMS sent successfully:", response.data);
         })
         .catch((error) => {
-          console.log(error);
-          return res.json({ message: "Ошибка при отправке sms сообщения" });
+          console.error("Error sending SMS:", error.response.data);
         });
     } else {
       const query3 = `UPDATE verify SET code = $1,
@@ -229,27 +239,36 @@ router.post("/verify", async (req, res) => {
       const values3 = [code, result2.rows[0].id];
 
       const result3 = await pool.query(query3, values3);
-      const headers = {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTA0ODY1OTcsImlhdCI6MTcwNzg5NDU5Nywicm9sZSI6InRlc3QiLCJzaWduIjoiMDRkZmYzNDA2NzJjNjdiZDBlZDI3MmU2N2I3ZTRlY2M2OTJmMzMwMjMyZmNlZTkyMDc1ODg3ZDA4NDZiODUyNSIsInN1YiI6IjY0MzcifQ.g1W-DPl2KnK4JAKkkblR9eXeYwu5vLcQtp1ajQkNShQ", // Замените на свой реальный токен доступа
-        "Content-Type": "application/json",
-        Accept: "application/json",
+      const data = {
+        messages: [
+          {
+            destinations: [{ to: "998903338849" }],
+            from: "ServiceSMS",
+            text: "Hello,\n\nThis is a test message from Infobip. Have a nice day!",
+          },
+        ],
       };
-      const msgApi = "https://notify.eskiz.uz/api/message/sms/send2";
-      const sendMsg = {
-        mobile_phone: phone,
-        message: code,
-        from: "4546",
+
+      const config = {
+        headers: {
+          Authorization:
+            "App caa6824706f69f2f53d642916974e8c5-5a2e55ee-95ad-4335-89df-e21c74e09d55",
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
       };
+
       axios
-        .post(msgApi, sendMsg, { headers })
+        .post(
+          "https://43mzem.api.infobip.com/sms/2/text/advanced",
+          data,
+          config
+        )
         .then((response) => {
-          console.log(response);
-          return res.json({ message: "Ваш код отправлен на ваш номер" });
+          console.log("SMS sent successfully:", response.data);
         })
         .catch((error) => {
-          console.log(error);
-          return res.json({ message: "Ошибка при отправке sms сообщения" });
+          console.error("Error sending SMS:", error.response.data);
         });
     }
   } catch (error) {
